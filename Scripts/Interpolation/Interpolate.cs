@@ -22,74 +22,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using UnityEngine;
+using dgroft.UnityExtensions.Scripts.Interpolation.Extensions;
 using System;
-using System.Collections;
+using UnityEngine;
 
-namespace dgroft.UnityExtensions.Scripts.Interpolation.Extensions
+namespace dgroft.UnityExtensions.Scripts.Interpolation
 {
-    public static class InterpolationExtensions
+    public class Interpolate : MonoBehaviour
     {
         /// <summary>
         /// Performs spherical interpolation of a game object's transform from its current
         /// position to its new position in seconds, and invokes the callback upon completion.
         /// </summary>
-        public static void PositionSlerp(this MonoBehaviour obj, Vector3 toPos, float seconds, Action done)
+        public void PositionSlerp(Vector3 toPos, float seconds, Action done)
         {
-            Vector3 origin = obj.gameObject.transform.position;
-
-            Action<float> applyInterpFunc = (f) => {
-            	obj.gameObject.transform.position = Vector3.Slerp(origin, toPos, f);
-            };
-
-            if (obj != null) { obj.StartCoroutine(Interpolate(applyInterpFunc, seconds, done)); }
+            this.PositionSlerp(toPos, seconds, done);
         }
 
-		/// <summary>
+        /// <summary>
         /// Performs linear interpolation of a game object's transform from its current
         /// rotation to its new rotation in seconds, and invokes the callback upon completion.
         /// </summary>
-        public static void RotationLerp(this MonoBehaviour obj, Quaternion toRot, float seconds, Action done)
+        public void RotationLerp(Quaternion toRot, float seconds, Action done)
         {
-            Quaternion origin = obj.gameObject.transform.rotation;
-
-            Action<float> applyInterpFunc = (f) => {
-            	obj.gameObject.transform.rotation = Quaternion.Lerp(origin, toRot, f);
-            };
-
-            if (obj != null) { obj.StartCoroutine(Interpolate(applyInterpFunc, seconds, done)); }
+            this.RotationLerp(toRot, seconds, done);
         }
 
-		/// <summary>
+        /// <summary>
         /// Performs linear interpolation of a game object's transform from its current
         /// local scale to its new local scale in seconds, and invokes the callback upon completion.
         /// </summary>
-        public static void ScaleLerp(this MonoBehaviour obj, Vector3 toScale, float seconds, Action done)
+        public void ScaleLerp(Vector3 toScale, float seconds, Action done)
         {
-            Vector3 origin = obj.gameObject.transform.localScale;
-
-            Action<float> applyInterpFunc = (f) => {
-            	obj.gameObject.transform.localScale = Vector3.Lerp(origin, toScale, f);
-            };
-
-            if (obj != null) { obj.StartCoroutine(Interpolate(applyInterpFunc, seconds, done)); }
+            this.ScaleLerp(toScale, seconds, done);
         }
-
-	private static IEnumerator Interpolate(Action<float> applyInterpFunc, float seconds, Action done)
-	{
-		float accumulatedTime = 0;
-
-		int percent = 0;
-
-		while (percent <= 100)
-		{
-			applyInterpFunc(Mathf.SmoothStep(0.0f, 1.0f, accumulatedTime / seconds));
-			accumulatedTime += Time.deltaTime;
-			percent = (int)((accumulatedTime / seconds) * 100);
-			yield return true;	
-		}
-
-		if (done != null) { done(); }
-	}
     }
 }
