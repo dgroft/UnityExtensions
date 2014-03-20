@@ -5,7 +5,7 @@ This project contains a series of extensions for use with Unity 3D.
 
 ## Interpolation
 
-You'll notice that with interpolations, the extension methods for interpolation can only be called on objects that derive from MonoBehaviour. This is required because the interpolation relies on CoRoutines, which MonoBehaviour provides access to.
+You'll notice that with interpolations, the extension methods for interpolation can only be called on objects that derive from MonoBehaviour. This is required because the interpolation relies on <a href="http://docs.unity3d.com/Documentation/Manual/Coroutines.html">Coroutines</a>, which MonoBehaviour provides access to.
 
 The use of the extension methods directly is recommended, but a separate Interpolate.cs script is provided so that you can attach it to GameObject you wish to interpolate, complete with wrapper functions to the extensions.
 
