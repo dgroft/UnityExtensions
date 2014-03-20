@@ -75,21 +75,21 @@ namespace dgroft.UnityExtensions.Scripts.Interpolation
             if (obj != null) { obj.StartCoroutine(Interpolate(applyInterpFunc, seconds, done)); }
         }
 
-		private static IEnumerator Interpolate(Action<float> applyInterpFunc, float seconds, Action done)
+	private static IEnumerator Interpolate(Action<float> applyInterpFunc, float seconds, Action done)
+	{
+		float accumulatedTime = 0;
+
+		int percent = 0;
+
+		while (percent <= 100)
 		{
-			float accumulatedTime = 0;
-
-			int percent = 0;
-
-			while (percent <= 100)
-			{
-				applyInterpFunc(Mathf.SmoothStep(0.0f, 1.0f, accumulatedTime / seconds));
-				accumulatedTime += Time.deltaTime;
-				percent = (int)((accumulatedTime / seconds) * 100);
-				yield return true;	
-			}
-
-			if (done != null) { done(); }
+			applyInterpFunc(Mathf.SmoothStep(0.0f, 1.0f, accumulatedTime / seconds));
+			accumulatedTime += Time.deltaTime;
+			percent = (int)((accumulatedTime / seconds) * 100);
+			yield return true;	
 		}
+
+		if (done != null) { done(); }
+	}
     }
 }
